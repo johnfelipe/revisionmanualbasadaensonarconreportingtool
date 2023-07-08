@@ -1,57 +1,57 @@
-# CNES SonarQube image \[server\]
+# Imagen SonarQube del CNES \[servidor\]
 
 ![](https://github.com/cnescatlab/sonarqube/workflows/CI/badge.svg)
 ![](https://github.com/cnescatlab/sonarqube/workflows/CD/badge.svg)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2a4a53f54ae94bd69d66a7690b95612f)](https://www.codacy.com/gh/cnescatlab/sonarqube?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lequal/sonarqube&amp;utm_campaign=Badge_Grade)
+[![Insignia de Codacy](https://app.codacy.com/project/badge/Grade/2a4a53f54ae94bd69d66a7690b95612f)](https://www.codacy.com/gh/cnescatlab/sonarqube?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lequal/sonarqube&amp;utm_campaign=Badge_Grade)
 
-> Docker image for SonarQube with pre-configured plugins and settings by CNES dedicated to Continuous Integration.
+> Imagen Docker para SonarQube con plugins preconfigurados y ajustes del CNES dedicados a la integración continua.
 
-This image is a pre-configured SonarQube server image derived from [Docker-CAT](https://github.com/cnescatlab/docker-cat). It contains the same plugins and the same rules for code analysis. It is based on the LTS version of SonarQube.
+Esta imagen es una imagen de servidor SonarQube preconfigurada derivada de [Docker-CAT](https://github.com/cnescatlab/docker-cat). Contiene los mismos plugins y las mismas reglas para el análisis de código. Está basado en la versión LTS de SonarQube.
 
-SonarQube itself is an open source project on GitHub: [SonarSource/sonarqube](https://github.com/SonarSource/sonarqube).
+SonarQube en sí es un proyecto de código abierto en GitHub: [SonarSource/sonarqube](https://github.com/SonarSource/sonarqube).
 
-For versions and changelog: [GitHub Releases](https://github.com/cnescatlab/sonarqube/releases).
+Para versiones y registro de cambios: [Versiones de GitHub](https://github.com/cnescatlab/sonarqube/releases).
 
-## Features
+## Funciones
 
-This image is based on the official SonarQube LTS image, namely [sonarqube:8.9.6-community](https://hub.docker.com/_/sonarqube), and offers additional features.
+Esta imagen se basa en la imagen oficial de SonarQube LTS, a saber, [sonarqube: 8.9.6-community](https://hub.docker.com/_/sonarqube), y ofrece características adicionales.
 
-Additional features are:
+Las características adicionales son:
 
-* Mandatory modification of the default admin password to run a container.
-* Healthcheck of the container.
-* More plugins (see [the list](#sonarqube-plugins-included))
-* CNES configuration
-    * CNES Java rules
-    * CNES Quality Profiles for Java, Python, C, C++ and VHDL
-    * CNES Quality Gate (set as default)
+* Modificación obligatoria de la contraseña de administrador predeterminada para ejecutar un contenedor.
+* Comprobación del estado del contenedor.
+* Más plugins (ver [la lista](#sonarqube-plugins-included))
+* Configuración CNES
+    * Reglas Java del CNES
+    * Perfiles de calidad CNES para Java, Python, C, C++ y VHDL
+    * CNES Quality Gate (establecido como predeterminado)
 
-_This image is made to be used in conjunction with a pre-configured sonar-scanner image that embeds all necessary tools: [cnescatlab/sonar-scanner](https://github.com/cnescatlab/sonar-scanner). It is, however, not mandatory to use it._
+_Esta imagen está hecha para ser utilizada junto con una imagen de sonar-escáner preconfigurada que incorpora todas las herramientas necesarias: [cnescatlab/sonar-scanner](https://github.com/cnescatlab/sonar-scanner). Sin embargo, no es obligatorio usarlo._
 
-## Developer's guide
+## Guía del desarrollador
 
-### How to build the image
+### Cómo construir la imagen
 
-It is a normal docker image. Thus, it can be built with the following commands.
+Es una imagen docker normal. Por lo tanto, se puede construir con los siguientes comandos.
 
 ```sh
 # from the root of the project
 $ docker build -t lequal/sonarqube .
 ```
 
-To then run a container with this image see the [user guide](#user-guide).
+Para luego ejecutar un contenedor con esta imagen, consulte la guía del [usuario](#user-guide).
 
-To run the tests and create your own ones see the [test documentation](https://github.com/cnescatlab/sonarqube/tree/develop/tests).
+Para ejecutar las pruebas y crear las suyas propias, consulte la documentación de la [prueba](https://github.com/cnescatlab/sonarqube/tree/develop/tests).
 
-## User guide
+## Guía del usuario
 
-This image is available on Docker Hub: [lequal/sonarqube](https://hub.docker.com/r/lequal/sonarqube/).
+Esta imagen está disponible en Docker Hub: [lequal/sonarqube](https://hub.docker.com/r/lequal/sonarqube/).
 
-Since inception, this image has been designed to be used in production. Thus, leaving the default admin password (namely "admin") will never be an option. To this extent, a new password for the admin account shall be given by setting the environment variable `SONARQUBE_ADMIN_PASSWORD`.
+Desde su creación, esta imagen ha sido diseñada para ser utilizada en producción. Por lo tanto, dejar la contraseña de administrador predeterminada (es decir, "admin") nunca será una opción. En este sentido, se proporcionará una nueva contraseña para la cuenta de administrador estableciendo la variable de entorno `SONARQUBE_ADMIN_PASSWORD`.
 
-:warning: :rotating_light: The container will fail to run if `SONARQUBE_ADMIN_PASSWORD` is empty or equal to "admin".
+:warning: :rotating_light: El contenedor no se ejecutará si `SONARQUBE_ADMIN_PASSWORD` está vacío o es igual a "admin".
 
-To run the image locally:
+Para ejecutar la imagen localmente:
 
 ```sh
 # Recommended options
@@ -67,9 +67,9 @@ Ctrl-C
 $ docker container stop lequalsonarqube
 ```
 
-### Use an external database
+### Usar una base de datos externa
 
-By default, SonarQube uses an embedded database that can be used for tests but in production using an external database for data persistency is mandatory. The `docker-compose.yml` file shows an example of how to configure an external postgres database. It can be run with:
+De forma predeterminada, SonarQube utiliza una base de datos integrada que se puede utilizar para pruebas, pero en producción el uso de una base de datos externa para la persistencia de datos es obligatorio. El `docker-compose.yml` archivo muestra un ejemplo de cómo configurar una base de datos postgres externa. Se puede ejecutar con:
 
 ```sh
 $ docker-compose up -d
@@ -78,46 +78,46 @@ $ docker-compose up -d
 $ LEQUAL_SONARQUBE_VERSION=1.0.0 POSTGRES_PASSWD=secret-passwd SONARQUBE_ADMIN_PASSWORD="a password" docker-compose up -d
 ```
 
-With an external database, the data used by SonarQube is stored outside of the container. It means that the container may be stopped, restarted, removed and recreated at will.
+Con una base de datos externa, los datos utilizados por SonarQube se almacenan fuera del contenedor. Significa que el contenedor puede detenerse, reiniciarse, retirarse y recrearse a voluntad.
 
-## SonarQube plugins included
+## Plugins de SonarQube incluidos
 
-| SonarQube plugin                                  | Version                  | URL                                                                        |
+| Plugin SonarQube                                  | Versión                  | URL                                                                        |
 |---------------------------------------------------|--------------------------|----------------------------------------------------------------------------|
 | Ansible Lint                                      | 2.5.1                    | https://github.com/sbaudoin/sonar-ansible/sonar-ansible-plugin             |
-| C# Code Quality and Security                      | 8.22 (build 31243)       | http://redirect.sonarsource.com/plugins/csharp.html                        |
-| C++ (Community)                                   | 2.0.7 (build 3119)       | https://github.com/SonarOpenCommunity/sonar-cxx/wiki                       |
-| CSS Code Quality and Security                     | 1.4.2 (build 2002)       | http://redirect.sonarsource.com/plugins/css.html                           |
-| Checkstyle                                        | 8.40                     | n/a                                                                        |
-| Clover                                            | 4.1                      | https://github.com/sfeir-open-source/sonar-clover                          |
+| Calidad y seguridad del código C#                      | 8.22 (compilación 31243)       | http://redirect.sonarsource.com/plugins/csharp.html                        |
+| C++ (Comunidad)                                   | 2.0.7 (compilación 3119)       | https://github.com/SonarOpenCommunity/sonar-cxx/wiki                       |
+| Calidad y seguridad del código CSS                     | 1.4.2 (compilación 2002)       | http://redirect.sonarsource.com/plugins/css.html                           |
+| Estilo de comprobación                                        | 8.40                     | n/d                                                                        |
+| Trébol                                            | 4.1                      | https://github.com/sfeir-open-source/sonar-clover                          |
 | Cobertura                                         | 2.0                      | https://github.com/galexandre/sonar-cobertura                              |
-| Community Branch Plugin                           | 1.8.1                    | https://github.com/mc1arke/sonarqube-community-branch-plugin               |
-| FPGA Metrics                                      | 1.3.0                    | https://www.linty-services.com                                             |
+| Complemento de sucursal comunitaria                           | 1.8.1                    | https://github.com/mc1arke/sonarqube-community-branch-plugin               |
+| Métricas de FPGA                                      | 1.3.0                    | https://www.linty-services.com                                             |
 | Findbugs                                          | 4.0.4                    | https://github.com/spotbugs/sonar-findbugs/                                |
-| Flex Code Quality and Security                    | 2.6.1 (build 2564)       | http://redirect.sonarsource.com/plugins/flex.html                          |
-| Go Code Quality and Security                      | 1.8.3 (build 2219)       | http://redirect.sonarsource.com/plugins/go.html                            |
-| HTML Code Quality and Security                    | 3.4 (build 2754)         | http://redirect.sonarsource.com/plugins/web.html                           |
-| JaCoCo                                            | 1.1.1 (build 1157)       | n/a                                                                        |
-| Java Code Quality and Security                    | 6.15.1 (build 26025)     | http://redirect.sonarsource.com/plugins/java.html                          |
-| JavaScript/TypeScript Code Quality and Security   | 7.4.4 (build 15624)      | http://redirect.sonarsource.com/plugins/javascript.html                    |
-| Kotlin Code Quality and Security                  | 1.8.3 (build 2219)       | http://redirect.sonarsource.com/plugins/kotlin.html                        |
+| Calidad y seguridad del código flexible                    | 2.6.1 (compilación 2564)       | http://redirect.sonarsource.com/plugins/flex.html                          |
+| Calidad y seguridad de Go Code                      | 1.8.3 (compilación 2219)       | http://redirect.sonarsource.com/plugins/go.html                            |
+| Calidad y seguridad del código HTML                    | 3.4 (compilación 2754)         | http://redirect.sonarsource.com/plugins/web.html                           |
+| JaCoCo                                            | 1.1.1 (compilación 1157)       | n/d                                                                        |
+| Calidad y seguridad del código Java                    | 6.15.1 (compilación 26025)     | http://redirect.sonarsource.com/plugins/java.html                          |
+| Calidad y seguridad del código JavaScript/TypeScript   | 7.4.4 (compilación 15624)      | http://redirect.sonarsource.com/plugins/javascript.html                    |
+| Calidad y seguridad del código Kotlin                  | 1.8.3 (compilación 2219)       | http://redirect.sonarsource.com/plugins/kotlin.html                        |
 | ModelSim                                          | 1.6.0                    | https://www.linty-services.com                                             |
-| PHP Code Quality and Security                     | 3.17.0.7439              | http://redirect.sonarsource.com/plugins/php.html                           |
+| Calidad y seguridad del código PHP                     | 3.17.0.7439              | http://redirect.sonarsource.com/plugins/php.html                           |
 | PMD                                               | 3.3.1                    | https://github.com/jensgerdes/sonar-pmd                                    |
-| Python Code Quality and Security                  | 3.4.1 (build 8066)       | http://redirect.sonarsource.com/plugins/python.html                        |
-| Ruby Code Quality and Security                    | 1.8.3 (build 2219)       | http://redirect.sonarsource.com/plugins/ruby.html                          |
-| Scala Code Quality and Security                   | 1.8.3 (build 2219)       | http://redirect.sonarsource.com/plugins/scala.html                         |
-| ShellCheck Analyzer                               | 2.5.0                    | https://github.com/sbaudoin/sonar-shellcheck                               |
-| Sonar Frama-C plugin                              | 2.1.1                    | https://github.com/lequal/sonar-frama-c-plugin                             |
-| Sonar i-Code CNES plugin                          | 3.0.0                    | https://github.com/cnescatlab/sonar-icode-cnes-plugin                      |
-| SonarQube CNES Report                             | 4.1.3                    | https://github.com/cnescatlab/sonar-cnes-report                            |
-| SonarTS                                           | 2.1 (build 4362)         | http://redirect.sonarsource.com/plugins/typescript.html                    |
-| VB.NET Code Quality and Security                  | 8.22 (build 31243)       | http://redirect.sonarsource.com/plugins/vbnet.html                         |
+| Calidad y seguridad del código Python                  | 3.4.1 (compilación 8066)       | http://redirect.sonarsource.com/plugins/python.html                        |
+| Calidad y seguridad del código Ruby                    | 1.8.3 (compilación 2219)       | http://redirect.sonarsource.com/plugins/ruby.html                          |
+| Calidad y seguridad del código de Scala                   | 1.8.3 (compilación 2219)       | http://redirect.sonarsource.com/plugins/scala.html                         |
+| Analizador ShellCheck                               | 2.5.0                    | https://github.com/sbaudoin/sonar-shellcheck                               |
+| Plugin Sonar Frama-C                              | 2.1.1                    | https://github.com/lequal/sonar-frama-c-plugin                             |
+| Complemento Sonar i-Code CNES                          | 3.0.0                    | https://github.com/cnescatlab/sonar-icode-cnes-plugin                      |
+| Informe SonarQube CNES                             | 4.1.3                    | https://github.com/cnescatlab/sonar-cnes-report                            |
+| SonarTS                                           | 2.1 (compilación 4362)         | http://redirect.sonarsource.com/plugins/typescript.html                    |
+| VB.NET Calidad y seguridad del código                  | 8.22 (compilación 31243)       | http://redirect.sonarsource.com/plugins/vbnet.html                         |
 | VHDLRC                                            | 3.4                      | https://www.linty-services.com                                             |
-| XML Code Quality and Security                     | 2.2 (build 2973)         | http://redirect.sonarsource.com/plugins/xml.html                           |
-| YAML Analyzer                                     | 1.7.0                    | https://github.com/sbaudoin/sonar-yaml                                     |
+| Calidad y seguridad del código XML                     | 2.2 (compilación 2973)         | http://redirect.sonarsource.com/plugins/xml.html                           |
+| Analizador YAML                                     | 1.7.0                    | https://github.com/sbaudoin/sonar-yaml                                     |
 
-To update this list run:
+Para actualizar esta lista, ejecute:
 ```sh                                                                   "
 while IFS='|' read -r plugin version url
 do
@@ -128,24 +128,24 @@ done < <(curl -u MY_TOKEN: -s http://localhost:9000/api/plugins/installed | jq -
 # With `MY_TOKEN` your SonarQube personal token.
 ```
 
-### Additional information for the Community Branch Plugin
+### Información adicional para el complemento Community Branch
 
-It is advised to set the property `sonar.core.serverBaseURL` in [/admin/settings](http://localhost:9000/admin/settings) for the links posted in PR comments and mail to work.
+Se recomienda establecer la propiedad `sonar.core.serverBaseURL` en [/admin/settings](http://localhost:9000/admin/settings) para que los enlaces publicados en los comentarios de relaciones públicas y el correo funcionen.
 
-## How to contribute
+## Cómo contribuir
 
-If you experienced a problem with the image please open an issue. Inside this issue please explain us how to reproduce this issue and paste the log. 
+Si experimentó un problema con la imagen, abra un problema. Dentro de este número, explíquenos cómo reproducir este problema y pegue el registro. 
 
-If you want to do a PR, please put inside of it the reason of this pull request. If this pull request fixes an issue please insert the number of the issue or explain inside of the PR how to reproduce this issue.
+Si desea hacer un PR, por favor ponga dentro de él el motivo de esta solicitud de extracción. Si esta solicitud de extracción soluciona un problema, inserte el número del problema o explique dentro del PR cómo reproducir este problema.
 
-All details are available in [CONTRIBUTING](https://github.com/cnescatlab/.github/blob/master/CONTRIBUTING.md).
+Todos los detalles están disponibles en [CONTRIBUTING.](https://github.com/cnescatlab/.github/blob/master/CONTRIBUTING.md)
 
-Bugs and feature requests: [issues](https://github.com/cnescatlab/sonarqube/issues)
+Errores y solicitudes de funciones: [problemas](https://github.com/cnescatlab/sonarqube/issues)
 
-To contribute to the project, read [this](https://github.com/cnescatlab/.github/wiki/CATLab's-Workflows) about CATLab's workflows for Docker images.
+Para contribuir al proyecto, lea [esto](https://github.com/cnescatlab/.github/wiki/CATLab's-Workflows) sobre los flujos de trabajo de CATLab para imágenes de Docker.
 
-## License
+## Licencia
 
-Licensed under the [GNU General Public License, Version 3.0](https://www.gnu.org/licenses/gpl.txt)
+Licenciado bajo la [Licencia Pública General GNU, Versión 3.0](https://www.gnu.org/licenses/gpl.txt)
 
-This project is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+Este proyecto es software libre; puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General GNU publicada por la Free Software Foundation; ya sea la versión 3 de la Licencia o (a su elección) cualquier versión posterior.
