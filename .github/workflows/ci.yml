@@ -1,0 +1,72 @@
+# Description
+# ===========
+# This workflow builds a docker image each time
+# commits are pushed to GitHub or a pull request is opened.
+# It also runs a container of this image to test it.
+---
+name: CI
+
+# This workflow is triggered each time commits are pushed to GitHub
+# and also on each pull request (on the commit that would be created
+# after the merge) but is not triggered if only markdown files were edited.
+on:
+  push:
+    branches:
+      - '*'
+    paths-ignore:
+      - '*.md'
+  pull_request:
+    branches:
+      - '*'
+    paths-ignore:
+      - '*.md'
+
+# Variables to configure the workflow
+env:
+  DOCKERFILE_PATH: '.'
+  DOCKERFILE_FILENAME: 'Dockerfile'
+  DOCKER_IMAGE_NAME: 'lequal/sonarqube'
+
+jobs:
+  # Job that builds the image and upload it as an artifact
+  build:
+    name: Build the docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build docker image
+        run: docker build -t $DOCKER_IMAGE_NAME $DOCKERFILE_PATH
+      - name: Save Docker image
+        run: docker image save -o image.tar $DOCKER_IMAGE_NAME
+      - name: Upload image as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: image
+          path: image.tar
+  # Job that tests the image
+  test:
+    name: Test the Docker image
+    runs-on: ubuntu-20.04
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Retrieve the image
+        uses: actions/download-artifact@v2
+        with:
+          name: image
+      - name: Load the image
+        run: docker image load -i image.tar
+      # Run the tests
+      - name: Test docker image
+        run: |
+          sudo sysctl -w vm.max_map_count=262144
+          echo -e "Results of the CI pipeline\n" > tests_logs.txt
+          cd tests/
+          python3 -m pip install -r requirements.txt
+          python3 -m pytest -v |& tee -a ../tests_logs.txt
+      # Have the job fail if at least one test failed
+      - name: Check all tests passed
+        run: |
+          cat tests_logs.txt
+          grep -v -q "FAILED" tests_logs.txt
